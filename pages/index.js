@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Box from '@mui/material/Box'
 import NavBar from '../components/NavBar'
 import HeroSection from '../components/HeroSection'
+import ProfilePicture from '../components/ProfilePicture'
 import ContractSection from '../components/ContractSection'
 import Footer from '../components/Footer'
 
@@ -17,7 +18,7 @@ export default function Home() {
         <HeroSection />
       </Box>
       <ContractSection />
+  <ProfilePicture />
       <Footer />
     </>
-  )
-}
+  )}
