@@ -16,9 +16,10 @@ export default function Home() {
       {/* offset for fixed AppBar */}
       <Box id="hero" sx={{ pt: { xs: 8, sm: 10 } }}>
         <HeroSection />
+        <ProfilePicture />
       </Box>
       <ContractSection />
-  <ProfilePicture />
       <Footer />
     </>
-  )}
+  )
+}
