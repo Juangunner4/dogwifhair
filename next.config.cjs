@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   // enable static HTML export
   output: 'export'
 }
-
-module.exports = nextConfig
