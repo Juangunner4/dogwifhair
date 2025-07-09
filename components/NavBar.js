@@ -10,7 +10,7 @@ export default function NavBar() {
   }
   const handleBuy = () => {
     window.open(
-      'https://app.uniswap.org/#/swap?outputCurrency=0x6yHXzbneQ…bonk',
+      'https://jup.ag/tokens/6yHXzbneXqSYJsXYryA5ovyeHDG3WZcBSdupurE8bonk',
       '_blank'
     )
   }

@@ -2,18 +2,13 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 export default function HeroSection() {
   return (
     <Box
       sx={{
         position: 'relative',
         width: '100%',
-        height: { xs: '60vh', md: '90vh' },
-        border: '4px solid rgba(255,255,255,0.8)',
-        borderRadius: 2,
-        boxShadow: '0 8px 20px rgba(0,0,0,0.5)',
-        overflow: 'hidden'
+        height: { xs: '60vh', md: '90vh' }
       }}
     >
       {/* overlay content */}
@@ -22,7 +17,7 @@ export default function HeroSection() {
           position: 'relative',
           zIndex: 2,
           textAlign: 'center',
-          color: '#333'      // changed from #fff to #333
+          color: '#333'
         }}
       >
         <Typography
