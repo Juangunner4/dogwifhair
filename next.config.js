@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  // enable static HTML export
-  output: 'export'
-}
+const nextConfig = {
+  // enable static HTML export  output: 'export',
+};
+
+export default nextConfig;
