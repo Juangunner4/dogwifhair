@@ -22,9 +22,7 @@ jobs:
         run: npm ci
 
       - name: Build & export static site
-        run: |
-          npm run build
-          npm run export
+        run: npm run build     # 'output: export' in next.config.js handles HTML export
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
@@ -32,7 +30,7 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
+          local-dir: ./out/     # Next.js will output static files here
           server-dir: /home1/juangunner4/public_html/website_97bd6932/
           protocol: ftps
           port: 21
