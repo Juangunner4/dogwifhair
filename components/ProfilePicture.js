@@ -6,6 +6,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 
+const BASE_PROMPT =
+  'A small white dog (chihuahua) with large, round black eyes and a comically intense facial expression is sitting behind a flat surface. The dog has a digitally edited, realistic human hairstyle with short, dark spiked hair. The background is plain and minimalistic, keeping focus on the character. Maintain the same facial expression and pose, only change the hairstyle. [Hairstyle]'
+
 export default function ProfilePicture() {
   const [style, setStyle] = useState('')
   const [imageUrl, setImageUrl] = useState(null)
@@ -16,14 +19,19 @@ export default function ProfilePicture() {
     setLoading(true)
     setImageUrl(null)
     try {
-      const res = await fetch('/api/generate', {
+      const finalPrompt = BASE_PROMPT.replace('[Hairstyle]', style.trim())
+      const res = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: style }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({ prompt: finalPrompt, n: 1, size: '256x256' }),
       })
       if (!res.ok) throw new Error('Request failed')
       const data = await res.json()
-      setImageUrl(data.url)
+      const url = data.data && data.data[0] ? data.data[0].url : null
+      setImageUrl(url)
     } catch (err) {
       console.error(err)
     } finally {
@@ -33,8 +41,11 @@ export default function ProfilePicture() {
 
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>
+      <Typography variant="h5" sx={{ mb: 1 }}>
         Generate Profile Picture
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+        Enter a hairstyle to apply to the chihuahua
       </Typography>
       <Button
         variant="contained"
@@ -49,11 +60,13 @@ export default function ProfilePicture() {
           mb: 2
         }}
       >
-        Generate
+        Generate Image
       </Button>
       <TextField
         label="Hairstyle"
         variant="outlined"
+        multiline
+        rows={2}
         value={style}
         onChange={(e) => setStyle(e.target.value)}
         sx={{ width: '100%', maxWidth: 360, mb: 2 }}
