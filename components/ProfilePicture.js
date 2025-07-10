@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 import placeholderImg from '../assets/hair.png'
+import maskImg from '../assets/hair_mask.png'
 
 const BASE_PROMPT =
   'A small white dog (chihuahua) with large, round black eyes and a comically intense facial expression is sitting behind a flat surface. The dog has a digitally edited, realistic human hairstyle with short, dark spiked hair. The background is plain and minimalistic, keeping focus on the character. Maintain the same facial expression and pose, only change the hairstyle. [Hairstyle]'
@@ -44,9 +45,11 @@ export default function ProfilePicture() {
       const finalPrompt = BASE_PROMPT.replace('[Hairstyle]', style.trim())
       const imgResponse = await fetch(placeholderImg.src)
       const imgBlob = await imgResponse.blob()
+      const maskResponse = await fetch(maskImg.src)
+      const maskBlob = await maskResponse.blob()
       const formData = new FormData()
       formData.append('image', imgBlob, 'hair.png')
-      formData.append('mask', imgBlob, 'hair-mask.png')
+      formData.append('mask', maskBlob, 'hair-mask.png')
       formData.append('model', 'gpt-image-1')
       formData.append('prompt', finalPrompt)
       formData.append('n', '1')
