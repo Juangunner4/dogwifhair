@@ -24,14 +24,36 @@ export default function NavBar() {
         <Typography variant="h6" sx={{ flexGrow: 1, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
           $HAIR
         </Typography>
-        <Button color="inherit" sx={{ fontSize: { xs: '0.75rem', sm: '1rem' } }} onClick={scrollToHero}>
+        <Button
+          color="inherit"
+          sx={{
+            fontSize: { xs: '0.75rem', sm: '1rem' },
+            transition: 'background 0.2s, color 0.2s',
+            '&:hover': {
+              bgcolor: '#333',
+              color: '#fff',
+              backgroundColor: '#000',
+            },
+          }}
+          onClick={scrollToHero}
+        >
           Home
         </Button>
         <Button
           variant="outlined"
           color="inherit"
           onClick={handleBuy}
-          sx={{ ml: 1, borderColor: '#fff', fontSize: { xs: '0.75rem', sm: '1rem' } }}
+          sx={{
+            ml: 1,
+            borderColor: '#fff',
+            fontSize: { xs: '0.75rem', sm: '1rem' },
+            transition: 'background 0.2s, color 0.2s',
+            '&:hover': {
+              bgcolor: '#000',
+              color: '#fff',
+              borderColor: '#fff',
+            },
+          }}
         >
           Buy $HAIR
         </Button>

@@ -14,27 +14,47 @@ export default function ProfilePicture() {
   const [style, setStyle] = useState('')
   const [imageUrl, setImageUrl] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const generateImage = async () => {
     if (!style.trim()) return
+    setError(null)
     setLoading(true)
     setImageUrl(null)
     try {
+      // Prepare prompt and reference image for edit
       const finalPrompt = BASE_PROMPT.replace('[Hairstyle]', style.trim())
-      const res = await fetch('https://api.openai.com/v1/images/generations', {
+      // Fetch the reference image blob
+      const imgResponse = await fetch(placeholderImg.src)
+      const imgBlob = await imgResponse.blob()
+      // Build multipart form data for image edits endpoint
+      const formData = new FormData()
+      formData.append('image', imgBlob, 'hair.png')
+      formData.append('mask', imgBlob, 'hair-mask.png')
+      formData.append('prompt', finalPrompt)
+      formData.append('n', '1')
+      formData.append('size', '256x256')
+      formData.append('response_format', 'url')
+      const res = await fetch('https://api.openai.com/v1/images/edits', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
-        body: JSON.stringify({ prompt: finalPrompt, n: 1, size: '256x256' }),
+        body: formData,
       })
-      if (!res.ok) throw new Error('Request failed')
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}))
+        const msg = errBody.error?.message || 'Failed to generate image.'
+        setError(msg)
+        setLoading(false)
+        return
+      }
       const data = await res.json()
-      const url = data.data && data.data[0] ? data.data[0].url : null
+      const url = data.data?.[0]?.url ?? null
       setImageUrl(url)
     } catch (err) {
       console.error(err)
+      setError(err.message || 'An error occurred.')
     } finally {
       setLoading(false)
     }
@@ -46,32 +66,37 @@ export default function ProfilePicture() {
         Generate Profile Picture
       </Typography>
       <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-        Enter a hairstyle to apply to the chihuahua
+        Enter a hairstyle
       </Typography>
-      <Button
-        variant="contained"
-        onClick={generateImage}
-        disabled={loading}
-        sx={{
-          width: '100%',
-          maxWidth: 360,
-          bgcolor: '#333',
-          color: '#fff',
-          '&:hover': { bgcolor: '#000000' },
-          mb: 2
-        }}
-      >
-        Generate Image
-      </Button>
-      <TextField
-        label="Hairstyle"
-        variant="outlined"
-        multiline
-        rows={2}
-        value={style}
-        onChange={(e) => setStyle(e.target.value)}
-        sx={{ width: '100%', maxWidth: 360, mb: 2 }}
-      />
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 360, mx: 'auto', mb: 2 }}>
+        <TextField
+          label="Hairstyle"
+          variant="outlined"
+          multiline
+          rows={2}
+          value={style}
+          onChange={(e) => setStyle(e.target.value)}
+          sx={{ width: '100%', mb: 2 }}
+        />
+        <Button
+          variant="contained"
+          onClick={generateImage}
+          disabled={loading}
+          sx={{
+            width: '100%',
+            bgcolor: '#333',
+            color: '#fff',
+            '&:hover': { bgcolor: '#000000' },
+          }}
+        >
+          Generate Image
+        </Button>
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
+      </Box>
       <Box sx={{ mt: 4, minHeight: 256 }}>
         {loading && <CircularProgress />}
         {!loading && !imageUrl && (

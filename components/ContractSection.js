@@ -26,12 +26,15 @@ export default function ContractSection() {
           display: 'inline-flex',
           alignItems: 'center',
           p: { xs: 1.5, sm: 2 },
-          border: '2px solid #fff',
           borderRadius: 2,
           bgcolor: '#333',
           color: '#fff',
           cursor: 'pointer',
-          '&:hover': { boxShadow: '0 4px 12px rgba(0,0,0,0.3)' },
+          transition: 'transform 0.2s, box-shadow 0.2s',
+          '&:hover': {
+            boxShadow: '0 8px 20px rgba(0,0,0,0.5)',
+            transform: 'scale(1.05)',
+          },
         }}
         elevation={0}
       >
