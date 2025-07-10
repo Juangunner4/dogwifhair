@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -15,34 +15,48 @@ export default function ProfilePicture() {
   const [imageUrl, setImageUrl] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [dailyCount, setDailyCount] = useState(0)
+  const DAILY_LIMIT = 20
+
+  useEffect(() => {
+    const today = new Date().toDateString()
+    const storedDate = localStorage.getItem('ppDate')
+    const storedCount = parseInt(localStorage.getItem('ppCount') || '0', 10)
+    if (storedDate === today) {
+      setDailyCount(storedCount)
+    } else {
+      localStorage.setItem('ppDate', today)
+      localStorage.setItem('ppCount', '0')
+      setDailyCount(0)
+    }
+  }, [])
 
   const generateImage = async () => {
     if (!style.trim()) return
+    if (dailyCount >= DAILY_LIMIT) {
+      setError(`Daily limit of ${DAILY_LIMIT} images reached.`)
+      return
+    }
     setError(null)
     setLoading(true)
     setImageUrl(null)
     try {
-      // Prepare prompt and reference image for edit
       const finalPrompt = BASE_PROMPT.replace('[Hairstyle]', style.trim())
-      // Fetch the reference image blob
       const imgResponse = await fetch(placeholderImg.src)
       const imgBlob = await imgResponse.blob()
-      // Build multipart form data for image edits endpoint
       const formData = new FormData()
       formData.append('image', imgBlob, 'hair.png')
       formData.append('mask', imgBlob, 'hair-mask.png')
-      // specify model for edits
       formData.append('model', 'gpt-image-1')
       formData.append('prompt', finalPrompt)
       formData.append('n', '1')
-      formData.append('size', '1024x1024') // use supported size for gpt-image-1
-      // gpt-image-1 returns base64-encoded images by default
+      formData.append('size', '1024x1024')
       const res = await fetch('https://api.openai.com/v1/images/edits', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`
         },
-        body: formData,
+        body: formData
       })
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}))
@@ -52,10 +66,13 @@ export default function ProfilePicture() {
         return
       }
       const data = await res.json()
-      // build data URL from base64 JSON
       const b64 = data.data?.[0]?.b64_json
       const url = b64 ? `data:image/png;base64,${b64}` : null
       setImageUrl(url)
+      // update daily count
+      const newCount = dailyCount + 1
+      setDailyCount(newCount)
+      localStorage.setItem('ppCount', newCount.toString())
     } catch (err) {
       console.error(err)
       setError(err.message || 'An error occurred.')
