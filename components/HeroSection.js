@@ -3,6 +3,8 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import Image from 'next/image'
+import heroImg from '../assets/hair.jpg'
 
 export default function HeroSection() {
   return (
@@ -15,6 +17,7 @@ export default function HeroSection() {
         overflow: 'hidden',
       }}
     >
+      <Image src={heroImg} alt="Hero" fill style={{ objectFit: 'cover' }} />
       {/* overlay content */}
       <Container
         sx={{

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
+import placeholderImg from '../assets/hair.png'
 
 const BASE_PROMPT =
   'A small white dog (chihuahua) with large, round black eyes and a comically intense facial expression is sitting behind a flat surface. The dog has a digitally edited, realistic human hairstyle with short, dark spiked hair. The background is plain and minimalistic, keeping focus on the character. Maintain the same facial expression and pose, only change the hairstyle. [Hairstyle]'
@@ -73,6 +74,16 @@ export default function ProfilePicture() {
       />
       <Box sx={{ mt: 4, minHeight: 256 }}>
         {loading && <CircularProgress />}
+        {!loading && !imageUrl && (
+          <Box sx={{ position: 'relative', width: 256, height: 256, mx: 'auto' }}>
+            <Image
+              src={placeholderImg}
+              alt="Profile placeholder"
+              fill
+              style={{ objectFit: 'cover' }}
+            />
+          </Box>
+        )}
         {imageUrl && (
           <Box sx={{ position: 'relative', width: 256, height: 256, mx: 'auto' }}>
             <Image src={imageUrl} alt="Profile" fill style={{ objectFit: 'cover' }} />
