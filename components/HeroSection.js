@@ -75,7 +75,7 @@ export default function HeroSection() {
             fontWeight: 500,
           }}
         >
-          Viral Korean DogWithHair
+          Just a dog with hair
         </Typography>
       </Container>
     </Box>

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import Gallery from './Gallery.js'
 
 const CONTRACT_ADDRESS = '6yHXzbneXqSYJsXYryA5ovyeHDG3WZcBSdupurE8bonk'
 
@@ -51,6 +52,8 @@ export default function ContractSection() {
           Copied!
         </Typography>
       )}
+
+      <Gallery />
     </Box>
   )
 }
