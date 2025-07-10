@@ -25,12 +25,14 @@ export default function ContractSection() {
         sx={{
           display: 'inline-flex',
           alignItems: 'center',
+          justifyContent: 'center',            // center content
           p: { xs: 1.5, sm: 2 },
           borderRadius: 2,
           bgcolor: '#333',
           color: '#fff',
           cursor: 'pointer',
           transition: 'transform 0.2s, box-shadow 0.2s',
+          width: { xs: '100%', sm: 'auto' },       // full width on mobile
           '&:hover': {
             boxShadow: '0 8px 20px rgba(0,0,0,0.5)',
             transform: 'scale(1.05)',
@@ -38,7 +40,7 @@ export default function ContractSection() {
         }}
         elevation={0}
       >
-        <Typography noWrap sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, mr: 1 }}>
+        <Typography sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, mr: 1, wordBreak: 'break-all' }}>
           {CONTRACT_ADDRESS}
         </Typography>
         <ContentCopyIcon fontSize="small" />
