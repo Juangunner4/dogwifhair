@@ -19,3 +19,7 @@ To generate the static site use:
 ```bash
 npm run build
 ```
+
+## Deployment
+
+The GitHub Actions workflow deploys the static site to HostGator. Ensure that `NEXT_PUBLIC_OPENAI_API_KEY` is added as a repository secret so the build can access the OpenAI API during deployment.
