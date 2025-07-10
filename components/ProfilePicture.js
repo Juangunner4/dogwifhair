@@ -31,10 +31,12 @@ export default function ProfilePicture() {
       const formData = new FormData()
       formData.append('image', imgBlob, 'hair.png')
       formData.append('mask', imgBlob, 'hair-mask.png')
+      // specify model for edits
+      formData.append('model', 'gpt-image-1')
       formData.append('prompt', finalPrompt)
       formData.append('n', '1')
-      formData.append('size', '256x256')
-      formData.append('response_format', 'url')
+      formData.append('size', '1024x1024') // use supported size for gpt-image-1
+      // gpt-image-1 returns base64-encoded images by default
       const res = await fetch('https://api.openai.com/v1/images/edits', {
         method: 'POST',
         headers: {
@@ -50,7 +52,9 @@ export default function ProfilePicture() {
         return
       }
       const data = await res.json()
-      const url = data.data?.[0]?.url ?? null
+      // build data URL from base64 JSON
+      const b64 = data.data?.[0]?.b64_json
+      const url = b64 ? `data:image/png;base64,${b64}` : null
       setImageUrl(url)
     } catch (err) {
       console.error(err)
