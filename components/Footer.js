@@ -11,7 +11,9 @@ export default function Footer() {
       sx={{
         bgcolor: '#333',
         color: '#fff',
-        px: 0
+        px: 0,
+        width: '100vw',
+        left: 0,
       }}
     >
       <Toolbar
@@ -19,7 +21,8 @@ export default function Footer() {
           flexDirection: 'column',
           py: { xs: 1, sm: 2 },
           textAlign: 'center',
-          width: '100%'
+          width: '100%',
+          px: { xs: 2, sm: 0 },
         }}
       >
         <Typography
