@@ -25,6 +25,8 @@ jobs:
         run: |
           echo "NEXT_PUBLIC_OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPENAI_API_KEY }}" > .env.local
           echo "HOSTGATOR_DATABASE_URL=${{ secrets.HOSTGATOR_DATABASE_URL }}" >> .env.local
+          # Copy to .env so Prisma migrate deploy picks up the variables
+          cp .env.local .env
 
       - name: Migrate production database
         run: npx prisma migrate deploy
