@@ -8,9 +8,15 @@ export default function Gallery() {
   const [images, setImages] = useState([])
   // load gallery images from localStorage and include static assets
   useEffect(() => {
-    const loadImages = () => {
-      const stored = JSON.parse(localStorage.getItem('galleryImages') || '[]')
-      setImages([...stored])
+    const loadImages = async () => {
+      try {
+        const res = await fetch('/api/get-pfps')
+        if (!res.ok) throw new Error('Failed to fetch images')
+        const data = await res.json()
+        setImages(data.images)
+      } catch (err) {
+        console.error(err)
+      }
     }
     loadImages()
     window.addEventListener('gallery.update', loadImages)
