@@ -10,7 +10,7 @@ export default function Gallery() {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const res = await fetch('/api/get-pfps')
+        const res = await fetch('/get-pfps.php')
         if (!res.ok) throw new Error('Failed to fetch images')
         const data = await res.json()
         setImages(data.images)
