@@ -81,10 +81,7 @@ export default function ProfilePicture() {
       const newCount = dailyCount + 1
       setDailyCount(newCount)
       localStorage.setItem('ppCount', newCount.toString())
-      // Save generated image to gallery
-      const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]')
-      gallery.unshift(url)
-      localStorage.setItem('galleryImages', JSON.stringify(gallery))
+      // Notify gallery to reload from the server
       window.dispatchEvent(new Event('gallery.update'))
     } catch (err) {
       console.error(err)
