@@ -72,7 +72,7 @@ export default function ProfilePicture() {
       const b64 = data.data?.[0]?.b64_json
       const url = b64 ? `data:image/png;base64,${b64}` : null
       setImageUrl(url)
-      await fetch('/api/save-pfp', {
+      await fetch('/save-pfps.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
