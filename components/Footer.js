@@ -1,7 +1,6 @@
 import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 
 export default function Footer() {
   return (
@@ -18,29 +17,9 @@ export default function Footer() {
     >
       <Toolbar
         sx={{
-          flexDirection: 'column',
-          py: { xs: 1, sm: 2 },
-          textAlign: 'center',
-          width: '100%',
-          px: { xs: 2, sm: 0 },
+          minHeight: { xs: 48, sm: 56 },
         }}
-      >
-        <Typography
-          variant="body2"
-          sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
-        >
-          ©2025 DogWithHair. All rights reserved.
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            mt: 0.5,
-            fontSize: { xs: '0.7rem', sm: '0.875rem' }
-          }}
-        >
-          Disclaimer: $HAIR is a memecoin and has no utility. Don’t risk money you are afraid of losing. The price may go up or down. We are not responsible for the token’s price.
-        </Typography>
-      </Toolbar>
+      />
     </AppBar>
   )
 }
